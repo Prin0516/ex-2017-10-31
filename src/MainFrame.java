@@ -32,11 +32,20 @@ public class MainFrame extends JFrame {
     private JLabel stylejlb=new JLabel();
     private JLabel sizejlb=new JLabel();
     private JTextField familyjtf=new JTextField("");
-    private JTextField stylejtf=new JTextField("BOLD");
     private JTextField sizejtf=new JTextField("24");
     private int screenW=Toolkit.getDefaultToolkit().getScreenSize().width;
     private int screenH=Toolkit.getDefaultToolkit().getScreenSize().height;
     private int width=500,height=500;
+
+    private JMenuItem jmibook =new JMenuItem("Book");
+    private JMenuItem jmicategory=new JMenuItem("Category");
+    private JInternalFrame jiffile=new JInternalFrame();
+    private JMenuBar jmbfile=new JMenuBar();
+    private JMenu jmf=new JMenu("File");
+    private JMenuItem jmiopen=new JMenuItem("Open");
+    private JMenuItem jmiclose=new JMenuItem("Close");
+    private JMenuItem jmiload=new JMenuItem("Load");
+    private JFileChooser jfc=new JFileChooser();
     public MainFrame(LoginFrame log){
         loginFrame=log;
         init();
@@ -57,9 +66,13 @@ public class MainFrame extends JFrame {
         jmb.add(mS);
         jmb.add(mG);
         jmb.add(mA);
+
+        mF.add(jmibook);
+        mF.add(jmicategory);
         mF.add(jmiexit);
         mG.add(jmiloto);
         mS.add(jmifont);
+
         fontjpl.add(familyjlb);
         fontjpl.add(stylejlb);
         fontjpl.add(sizejlb);
@@ -119,9 +132,24 @@ public class MainFrame extends JFrame {
                 }
                 if(result==JOptionPane.OK_OPTION){
                     UIManager.put("Menu.font",new Font(familyjtf.getText(),fontstyle,Integer.parseInt(sizejtf.getText())));
+                    UIManager.put("MenuItem.font",new Font(familyjtf.getText(),fontstyle,Integer.parseInt(sizejtf.getText())));
                 }
 
 
+            }
+        });
+
+        jmibook.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                jdp.add(jiffile);
+                jiffile.setBounds(10,10,200,200);
+                jiffile.setVisible(true);
+                jiffile.setJMenuBar(jmbfile);
+                jmbfile.add(jmf);
+                jmf.add(jmiopen);
+                jmf.add(jmicategory);
+                jmf.add(jmiclose);
             }
         });
 
