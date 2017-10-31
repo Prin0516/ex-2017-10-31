@@ -4,6 +4,7 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
+import java.io.*;
 import java.util.Random;
 
 public class MainFrame extends JFrame {
@@ -46,6 +47,10 @@ public class MainFrame extends JFrame {
     private JMenuItem jmiclose=new JMenuItem("Close");
     private JMenuItem jmiload=new JMenuItem("Load");
     private JFileChooser jfc=new JFileChooser();
+    private JTextArea jta=new JTextArea("");
+    private JScrollPane jsp=new JScrollPane(jta);
+//    private JPanel filejpl=new JPanel();
+    private Container filecp;
     public MainFrame(LoginFrame log){
         loginFrame=log;
         init();
@@ -138,18 +143,48 @@ public class MainFrame extends JFrame {
 
             }
         });
-
+        jiffile.setJMenuBar(jmbfile);
+        jmbfile.add(jmf);
+        jmf.add(jmiopen);
+        jmf.add(jmiload);
+        jmf.add(jmiclose);
+        filecp=jiffile.getContentPane();
+        jta.setEditable(false);
+        filecp.add(jsp);
+        jiffile.setBounds(10,10,400,400);
+        jsp.setPreferredSize(new Dimension(200,400));
         jmibook.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
                 jdp.add(jiffile);
-                jiffile.setBounds(10,10,200,200);
                 jiffile.setVisible(true);
-                jiffile.setJMenuBar(jmbfile);
-                jmbfile.add(jmf);
-                jmf.add(jmiopen);
-                jmf.add(jmicategory);
-                jmf.add(jmiclose);
+
+            }
+        });
+
+        jmiload.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                    try {
+                        if(jfc.showOpenDialog(null)==JFileChooser.APPROVE_OPTION) {
+                            File infile = jfc.getSelectedFile();
+                        BufferedReader br = new BufferedReader(new FileReader(infile));
+                        System.out.println("FileName" + infile.getName());
+                        String str = "";
+                        while ((str = br.readLine()) != null) {
+                            jta.append(str + "\n");}
+                            System.out.println("Read file finished");
+                    } }catch (Exception el) {
+                        JOptionPane.showMessageDialog(null,"Open file error"+el.toString());
+                    }
+                }
+
+        });
+        jmiclose.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                jiffile.dispose();
+                jta.setText("");
             }
         });
 
